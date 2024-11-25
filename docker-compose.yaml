@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_DATABASE=rocketseat-db
+      - MYSQL_PASSWORD=root
+    networks:
+      - rocketseat-bridge-network
+
+  api-rocket:
+    build:
+      context: .
+    container_name: api-rocket
+    ports:
+      - 3001:3000
+    depends_on:
+      - mysql
+    networks:
+      - rocketseat-bridge-network
+
+networks:
+  rocketseat-bridge-network:
+    driver: bridge
+
+volumes:
+  db:
